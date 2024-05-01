@@ -1,0 +1,28 @@
+# Show the content in example.com/folder2, but the URL appears as example.com/folder1
+# RewriteEngine On
+# RewriteRule ^folder1/?$ /folder2/
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+RewriteRule ^ %1 [L,NE,R=302]
+
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
+
+# test
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+
+# Redirect 404 Error pages to the home page
+ErrorDocument 404 https://www.viphon.co.uk
+ 
+# Redirect non-existing pages to index.php
+Options +SymLinksIfOwnerMatch 
+RewriteEngine On 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
